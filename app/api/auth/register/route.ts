@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, fullName} = await request.json();
 
-    if (!email || !password) {
+    if (!email || !password || !fullName)  {
       return NextResponse.json(
-        { error: "Email and password are Required" },
+        { error: "All fields are Required" },
         { status: 400 }
       );
     }
@@ -26,6 +26,7 @@ export async function POST(request: NextRequest) {
     await User.create({
       email,
       password,
+      fullName
     });
 
     return NextResponse.json(
@@ -33,8 +34,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    console.error("Error details:", error);
     return NextResponse.json(
-      { error: "Failed to registre User" },
+      { error: "Internal server error, Failed to register User" },
       { status: 500 }
     );
   }
