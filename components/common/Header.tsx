@@ -1,11 +1,10 @@
 "use client"
 
 import Link from "next/link"
-import { useSession, signOut } from "next-auth/react"
-import { Home, Search, Plus, LogOut, Upload, Menu, X, User } from "lucide-react"
+import { signOut } from "next-auth/react"
+import { Home, Search, Plus, LogOut, Menu, X, User } from "lucide-react"
 import { useNotification } from "@/components/reuseable/Notification"
-import { useState, useEffect } from "react"
-import { cn } from "@/lib/utils"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -16,21 +15,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useAuth } from "@/app/context/useAuth"
 
 export default function Header() {
-  const { data: session } = useSession()
+  const { user } = useAuth()
   const { showNotification } = useNotification()
-  const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   const handleSignOut = async () => {
     try {
@@ -41,15 +32,12 @@ export default function Header() {
     }
   }
 
+
   return (
     <header
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "bg-background/80 backdrop-blur-md border-b shadow-sm" : "bg-background",
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      className="sticky top-0 left-0 right-0 bg-white z-50 transition-all border-b  duration-300">
+      <div className=" mx-auto px-6">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
           <Link
             href="/"
@@ -81,14 +69,14 @@ export default function Header() {
               </Button>
             </Link>
 
-            {session?.user ? (
+            {user?._id ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon" className="rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={session.user?.image || ""} alt={session.user?.name || "User"} />
+                      <AvatarImage src={user.image || ""} alt={user.fullName || "User"} />
                       <AvatarFallback className="bg-gradient-to-br from-pink-500 to-rose-500 text-white">
-                        {session.user?.email?.charAt(0).toUpperCase() || "U"}
+                        {user.email?.charAt(0).toUpperCase() || "U"}
                       </AvatarFallback>
                     </Avatar>
                   </Button>
@@ -96,8 +84,8 @@ export default function Header() {
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>
                     <div className="flex flex-col">
-                      <span className="font-medium">{session.user?.name || "User"}</span>
-                      <span className="text-xs text-muted-foreground">{session.user?.email}</span>
+                      <span className="font-medium">{user.fullName || "User"}</span>
+                      <span className="text-xs text-muted-foreground">{user.email}</span>
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -128,7 +116,7 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-3">
-            {session?.user && (
+            {user?._id && (
               <Link href="/upload">
                 <Button variant="outline" size="icon" className="rounded-full">
                   <Plus className="w-4 h-4" />
@@ -160,18 +148,18 @@ export default function Header() {
               />
             </div>
 
-            {session?.user ? (
+            {user?._id ? (
               <>
                 <div className="flex items-center gap-3 p-2">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src={session.user?.image || ""} alt={session.user?.name || "User"} />
+                    <AvatarImage src={user?.image || ""} alt={user.fullName || "User"} />
                     <AvatarFallback className="bg-gradient-to-br from-pink-500 to-rose-500 text-white">
-                      {session.user?.email?.charAt(0).toUpperCase() || "U"}
+                      {user.email?.charAt(0).toUpperCase() || "U"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col">
-                    <span className="font-medium">{session.user?.name || "User"}</span>
-                    <span className="text-xs text-muted-foreground">{session.user?.email}</span>
+                    <span className="font-medium">{user.fullName || "User"}</span>
+                    <span className="text-xs text-muted-foreground">{user?.email}</span>
                   </div>
                 </div>
                 <Link

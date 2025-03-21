@@ -2,15 +2,17 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Home, Compass, PlusSquare, Heart, User, Menu, X } from "lucide-react"
+import { Home, Compass, PlusSquare, Heart, User, Menu, X, Upload, LogIn } from "lucide-react"
+import { useAuth } from "@/app/context/useAuth"
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false)
+  const {user} = useAuth()
 
   return (
     <>
       {/* Mobile bottom navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100 border-t border-base-300 z-50">
+      <div className="lg:hidden  fixed bottom-0 left-0 right-0 bg-base-100 border-t border-base-300 z-50">
         <div className="flex justify-around items-center h-16">
           <Link href="/" className="flex flex-col items-center justify-center">
             <Home className="w-6 h-6" />
@@ -36,13 +38,21 @@ export default function Sidebar() {
       </div>
 
       {/* Desktop sidebar */}
-      <div className="hidden lg:flex flex-col w-64 bg-base-100 border-r border-base-300 h-screen sticky top-0">
-        <div className="p-4 border-b border-base-300">
-          <h1 className="text-2xl font-bold">ReelsPro</h1>
-        </div>
-
+      <div className="hidden lg:flex flex-col w-56  bg-base-100 border-r border-base-300  sticky top-0">
         <nav className="flex-1 p-4">
           <ul className="space-y-2">
+           {user?._id ? 
+           <li className="w-48 m-auto mb-2">
+              <Link href="/upload" className="flex justify-center font-semibold rounded-3xl  border shadow hover:text-pink-700 items-center px-3 py-2 ">
+                <Upload className="w-6 h-6 mr-3" />
+                <span>Upload</span>
+              </Link>
+            </li> :<li className="w-48 m-auto mb-2">
+              <Link href="/login" className="flex justify-center font-semibold rounded-3xl  border shadow hover:text-pink-700 items-center px-3 py-2 ">
+                <LogIn className="w-6 h-6 mr-3" />
+                <span>Login</span>
+              </Link>
+            </li> }
             <li>
               <Link href="/" className="flex items-center p-3 rounded-lg hover:bg-base-200">
                 <Home className="w-6 h-6 mr-3" />
@@ -68,17 +78,14 @@ export default function Sidebar() {
               </Link>
             </li>
             <li>
-              <Link href="/profile" className="flex items-center p-3 rounded-lg hover:bg-base-200">
+              <Link href="/user/profile" className="flex items-center p-3 rounded-lg hover:bg-base-200">
                 <User className="w-6 h-6 mr-3" />
                 <span>Profile</span>
               </Link>
             </li>
           </ul>
         </nav>
-
-        <div className="p-4 border-t border-base-300">
-          <button className="btn btn-outline w-full">Log Out</button>
-        </div>
+       
       </div>
 
       {/* Mobile menu button */}

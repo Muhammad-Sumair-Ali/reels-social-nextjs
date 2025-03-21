@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import PostCard from "@/components/post/PostCard";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import CreatePost from "@/components/post/CreatePost";
 
 export default function Profile() {
   const { data: session, status } = useSession();
@@ -79,7 +78,6 @@ export default function Profile() {
           </div>
         )}
 
-        <CreatePost />
       </div>
     </div>
   );

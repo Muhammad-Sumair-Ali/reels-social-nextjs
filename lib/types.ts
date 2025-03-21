@@ -6,6 +6,7 @@
     user: {
       _id: string;
       name?: string;
+      fullName?: string;
       image?: string;
       email: string;
       following?: Object[];
@@ -40,6 +41,7 @@ export interface PostCardData {
   user: {
     _id: string;
     name?: string;
+    fullName?: string;
     email: string;
     image?: string;
     following?:Object[];

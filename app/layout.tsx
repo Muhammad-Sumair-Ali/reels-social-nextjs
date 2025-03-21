@@ -32,9 +32,9 @@ export default function RootLayout({
       >
         <Providers>
           <Header/>
-          <div className="flex flex-col lg:flex-row min-h-screen bg-base-200">
+          <div className="flex w-[1220xpx] flex-col lg:flex-row min-h-screen bg-base-200">
             <ReelsSidebar />
-            <main className="flex-1 max-w-screen-sm mt-20  mx-auto">{children}</main>
+            <main className="flex-1 w-full py-4 px-6 mx-auto">{children}</main>
           </div>
         </Providers>
       </body>

@@ -36,6 +36,10 @@ export async function POST(req: NextRequest) {
       comments: [],
     });
 
+    if(!post.user){
+      return NextResponse.json({ message: "Something Went wrong User" }, { status: 400 });
+    }
+
     return NextResponse.json(post);
   } catch (error) {
     console.error("Error creating post:", error);

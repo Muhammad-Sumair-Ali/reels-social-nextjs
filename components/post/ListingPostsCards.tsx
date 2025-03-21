@@ -4,7 +4,6 @@ import PostCard from './PostCard';
 import axios from "axios";
 import { PostCardData } from '@/lib/types';
 
-// Updated interface to match the actual API response format
 
 const ListingPostsCards: React.FC = () => {
   const [posts, setPosts] = useState<PostCardData[]>([]);
